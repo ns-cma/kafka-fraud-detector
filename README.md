@@ -40,7 +40,8 @@ $ docker-compose up -d
 
 ## Usage
 
-Show a stream of transactions in the topic `T` (optionally add `--from-beginning`):
+Open `localhost:9000` to check dashboard Kafdrop or
+show a stream of transactions in the topic `T` (optionally add `--from-beginning`):
 
 ```bash
 $ docker-compose -f docker-compose.kafka.yml exec broker kafka-console-consumer --bootstrap-server localhost:9092 --topic T
