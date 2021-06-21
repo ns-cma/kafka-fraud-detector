@@ -8,6 +8,9 @@ services:
       KAFKA_BROKER_URL: broker:9092
       TRANSACTIONS_TOPIC: queueing.transactions
       TRANSACTIONS_PER_SECOND: 10
+    volumes:
+      - ./generator:/usr/app
+    command: ['python', 'app_faust.py', 'worker', '-l', 'info']
 
   detector:
     build: ./detector
@@ -19,7 +22,7 @@ services:
     volumes:
       - ./detector:/usr/app
     # faust
-    command: ['python', 'app_faust.py', 'worker']
+    command: ['python', 'app_faust.py', 'worker', '-l', 'info']
     # kafka-python
     # command: ['python', 'app.py']
 

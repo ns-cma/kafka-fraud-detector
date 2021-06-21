@@ -21,8 +21,8 @@ def is_suspicious(transaction: Transaction) -> bool:
     return transaction.amount >= 900
 
 
-app = faust.App('hello-app', broker=KAFKA_BROKER_URL)
-transactions_topic = app.topic(TRANSACTIONS_TOPIC, value_type=Transaction)
+app = faust.App('hello-app', broker=KAFKA_BROKER_URL, topic_partitions=10)
+transactions_topic = app.topic(TRANSACTIONS_TOPIC, value_type=Transaction, partitions=10)
 fraud_topic = app.topic(FRAUD_TOPIC, value_type=Transaction)
 legit_topic = app.topic(LEGIT_TOPIC, value_type=Transaction)
 
@@ -39,11 +39,13 @@ async def legit_process(Transactions):
 
 # our table is sharded amongst worker instances, and replicated
 # with standby copies to take over if one of the nodes fail.
-order_count_by_account = app.Table('order_count', default=int)
+# partition number should be exactly same as Transaction.
+order_count_by_account = app.Table(
+    'order_count', default=int, partitions=10)
 
 @app.agent(transactions_topic)
 async def process(orders: faust.Stream[Transaction]) -> None:
-    async for order in orders.group_by(Transaction.source):
+    async for order in orders:
         order_count_by_account[order.source] += 1
         producer = (
             fraud_process if is_suspicious(order) else legit_process)
