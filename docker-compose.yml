@@ -2,20 +2,34 @@ version: '3'
 
 services:
 
-  generator:
-    build: ./generator
+  kafka-python-producer:
+    build: ./kafka-python
     environment:
       KAFKA_BROKER_URL: broker:9092
-      TRANSACTIONS_TOPIC: queueing.transactions
-      TRANSACTIONS_PER_SECOND: 1000
+      MESSAGES_TOPIC: polling_resources
+      MESSAGES_PER_SECOND: 5
+    command: ["python3", "producer.py"]
 
-  detector:
-    build: ./detector
+  kafka-python-consumer-1:
+    build: ./kafka-python
     environment:
       KAFKA_BROKER_URL: broker:9092
-      TRANSACTIONS_TOPIC: queueing.transactions
-      LEGIT_TOPIC: streaming.transactions.legit
-      FRAUD_TOPIC: streaming.transactions.fraud
+      MESSAGES_TOPIC: polling_resources
+    command: ["python3", "consumer.py"]
+
+  kafka-python-consumer-2:
+    build: ./kafka-python
+    environment:
+      KAFKA_BROKER_URL: broker:9092
+      MESSAGES_TOPIC: polling_resources
+    command: ["python3", "consumer.py"]
+
+  kafka-python-consumer-3:
+    build: ./kafka-python
+    environment:
+      KAFKA_BROKER_URL: broker:9092
+      MESSAGES_TOPIC: polling_resources
+    command: [ "python3", "consumer.py" ]
 
 networks:
   default:

@@ -32,10 +32,20 @@ $ docker-compose -f docker-compose.kafka.yml up -d
 $ docker-compose -f docker-compose.kafka.yml logs -f broker | grep "started"
 ```
 
-- Start the transaction generator and the fraud detector (will run in the background):
+- Create necessary kafka topics
+```bash
+$ docker-compose -f docker-compose.kafka.yml exec broker kafka-topics --create --if-not-exists --zookeeper zookeeper:2181 --partitions 10 --replication-factor 1 --topic polling_resources
+```
+
+- Start the producer and the consumer (will run in the background):
 
 ```bash
 $ docker-compose up -d
+```
+
+- Watch the logs:
+```bash
+$ docker-compose logs -f
 ```
 
 ## Usage
