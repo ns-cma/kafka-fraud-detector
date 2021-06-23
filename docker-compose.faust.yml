@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+
+  faust-producer:
+    build: ./faust_example
+    environment:
+      KAFKA_BROKER_URL: broker:9092
+      MESSAGES_TOPIC: polling_resources
+      MESSAGES_PER_SECOND: 5
+    ports:
+      - "6066:6066"
+    command: ["python3", "producer.py", "worker"]
+
+  faust-consumer-1:
+    build: ./faust_example
+    environment:
+      KAFKA_BROKER_URL: broker:9092
+      MESSAGES_TOPIC: polling_resources
+    ports:
+      - "6067:6067"
+    command: ["python3", "consumer.py", "worker", "-p", "6067"]
+
+  faust-consumer-2:
+    build: ./faust_example
+    environment:
+      KAFKA_BROKER_URL: broker:9092
+      MESSAGES_TOPIC: polling_resources
+    ports:
+      - "6068:6068"
+    command: ["python3", "consumer.py", "worker", "-p", "6068"]
+
+  faust-consumer-3:
+    build: ./faust_example
+    environment:
+      KAFKA_BROKER_URL: broker:9092
+      MESSAGES_TOPIC: polling_resources
+    ports:
+      - "6069:6069"
+    command: ["python3", "consumer.py", "worker", "-p", "6069"]
+
+networks:
+  default:
+    external: true
+    name: kafka-network

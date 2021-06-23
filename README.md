@@ -37,16 +37,27 @@ $ docker-compose -f docker-compose.kafka.yml logs -f broker | grep "started"
 $ docker-compose -f docker-compose.kafka.yml exec broker kafka-topics --create --if-not-exists --zookeeper zookeeper:2181 --partitions 10 --replication-factor 1 --topic polling_resources
 ```
 
-- Start the producer and the consumer (will run in the background):
+-  Kafka-python demo:
+    - Start the producer and the consumer (will run in the background):
+    ```bash
+    $ docker-compose up -d
+    ```
+    
+    - Watch the logs:
+    ```bash
+    $ docker-compose logs -f
+    ```
 
-```bash
-$ docker-compose up -d
-```
-
-- Watch the logs:
-```bash
-$ docker-compose logs -f
-```
+- faust demo:
+    - Start the producer and the consumer (will run in the background):
+    ```bash
+    $ docker-compose -f docker-compose.faust.yml up -d
+    ```
+    
+    - Watch the logs:
+    ```bash
+    $ docker-compose -f docker-compose.faust.yml logs -f
+    ```
 
 ## Usage
 

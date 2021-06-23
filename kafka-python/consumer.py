@@ -18,3 +18,8 @@ if __name__ == '__main__':
     )
     for message in consumer:
         print(message)
+
+    # for batching messages we can use
+    # while True:
+    #     results = consumer.poll(timeout_ms=30 * 1000, max_records=1000)
+    # consumer.commit(offsets=new_offset)
