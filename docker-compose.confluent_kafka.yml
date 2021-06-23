@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+
+  kafka-python-producer:
+    build: ./confluence-kafka
+    environment:
+      KAFKA_BROKER_URL: broker:9092
+      MESSAGES_TOPIC: polling_resources
+      MESSAGES_PER_SECOND: 5
+    command: ["python3", "producer.py"]
+
+  kafka-python-consumer-1:
+    build: ./confluence-kafka
+    environment:
+      KAFKA_BROKER_URL: broker:9092
+      MESSAGES_TOPIC: polling_resources
+    command: ["python3", "consumer.py"]
+
+  kafka-python-consumer-2:
+    build: ./confluence-kafka
+    environment:
+      KAFKA_BROKER_URL: broker:9092
+      MESSAGES_TOPIC: polling_resources
+    command: ["python3", "consumer.py"]
+
+  kafka-python-consumer-3:
+    build: ./confluence-kafka
+    environment:
+      KAFKA_BROKER_URL: broker:9092
+      MESSAGES_TOPIC: polling_resources
+    command: [ "python3", "consumer.py" ]
+
+networks:
+  default:
+    external: true
+    name: kafka-network

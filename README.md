@@ -58,6 +58,17 @@ $ docker-compose -f docker-compose.kafka.yml exec broker kafka-topics --create -
     ```bash
     $ docker-compose -f docker-compose.faust.yml logs -f
     ```
+  
+- confluent-kafka demo:
+    - Start the producer and the consumer (will run in the background):
+    ```bash
+    $ docker-compose -f docker-compose.confluent_kafka.yml up -d
+    ```
+    
+    - Watch the logs:
+    ```bash
+    $ docker-compose -f docker-compose.confluent_kafka.yml logs -f
+    ```
 
 ## Usage
 
